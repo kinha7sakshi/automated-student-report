@@ -23,10 +23,10 @@ def calculate_grade(percentage):
     else:
         return "Fail"
 def check_status(percentage):
-	if percentage>=50:
-		return "Pass"
-	else:
-		return "Fail"
+    if percentage >= 50:
+        return "Pass"
+    else:
+        return "Fail"
 df["Grade"] = df["Percentage"].apply(calculate_grade)
 df["Status"] = df["Percentage"].apply(check_status)
 df["Rank"] = df["Percentage"].rank(ascending=False, method="min").astype(int)
@@ -35,8 +35,8 @@ df["Topper"] = df["Name"].apply(
     lambda name: "Yes" if name == topper_name else "No")
 df = df.sort_values("Rank")
 df["Percentage"] = df["Percentage"].round(2)
-df.to_excel("student_report.xlsx", index=False)
-workbook = load_workbook("student_report.xlsx")
+df.to_excel("automated_student_report.xlsx", index=False)
+workbook = load_workbook("automated_student_report.xlsx")
 sheet = workbook.active
 # Format header
 for cell in sheet[1]:
