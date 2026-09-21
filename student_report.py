@@ -86,56 +86,53 @@ for row in range(2, sheet.max_row + 1):
             cell.fill = fail_fill
             cell.font = Font(bold=True)
 # Create summary
-
 total_students = len(df)
 passed_students = (df["Status"] == "Pass").sum()
 failed_students = (df["Status"] == "Fail").sum()
 average_percentage = df["Percentage"].mean()
 highest_percentage = df["Percentage"].max()
 
-sheet["A9"] = "REPORT SUMMARY"
-sheet["A10"] = "Total Students"
-sheet["B10"] = total_students
+summary_start = total_students + 3  # +1 for header row, +2 for gap
 
-sheet["A11"] = "Passed"
-sheet["B11"] = passed_students
+sheet[f"A{summary_start}"] = "REPORT SUMMARY"
+sheet[f"A{summary_start+1}"] = "Total Students"
+sheet[f"B{summary_start+1}"] = total_students
 
-sheet["A12"] = "Failed"
-sheet["B12"] = failed_students
+sheet[f"A{summary_start+2}"] = "Passed"
+sheet[f"B{summary_start+2}"] = passed_students
 
-sheet["A13"] = "Average Percentage"
-sheet["B13"] = round(average_percentage, 2)
+sheet[f"A{summary_start+3}"] = "Failed"
+sheet[f"B{summary_start+3}"] = failed_students
 
-sheet["A14"] = "Highest Percentage"
-sheet["B14"] = highest_percentage
+sheet[f"A{summary_start+4}"] = "Average Percentage"
+sheet[f"B{summary_start+4}"] = round(average_percentage, 2)
 
-sheet["A15"] = "Topper"
-sheet["B15"] = topper_name
+sheet[f"A{summary_start+5}"] = "Highest Percentage"
+sheet[f"B{summary_start+5}"] = highest_percentage
 
-sheet["A9"].font = Font(bold=True)
+sheet[f"A{summary_start+6}"] = "Topper"
+sheet[f"B{summary_start+6}"] = topper_name
+
 # Format summary
-
-for row in range(9, 16):
+for row in range(summary_start, summary_start+7):
     for col in range(1, 3):
         cell = sheet.cell(row=row, column=col)
         cell.border = thin_border
 
-sheet["A9"].font = Font(bold=True)
-sheet["A9"].alignment = Alignment(horizontal="center")
+sheet[f"A{summary_start}"].font = Font(bold=True)
+sheet[f"A{summary_start}"].alignment = Alignment(horizontal="center")
 
-for row in range(10, 16):
+for row in range(summary_start+1, summary_start+7):
     sheet[f"A{row}"].font = Font(bold=True)
 
 sheet.column_dimensions["A"].width = 20
 sheet.column_dimensions["B"].width = 18
-# Style summary heading
 
+# Style summary heading
 summary_fill = PatternFill(fill_type="solid", fgColor="D9EAF7")
 
-for cell in sheet[9][0:2]:
+for cell in sheet[summary_start][0:2]:
     cell.fill = summary_fill
     cell.font = Font(bold=True)
 
-for row in range(10, 16):
-    sheet[f"A{row}"].font = Font(bold=True)
 workbook.save("automated_student_report.xlsx")
